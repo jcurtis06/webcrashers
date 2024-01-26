@@ -1,0 +1,107 @@
+[gd_scene load_steps=4 format=3 uid="uid://c6ovemd1se4cq"]
+
+[ext_resource type="Script" path="res://main_menu.gd" id="1_eeghv"]
+[ext_resource type="FontFile" uid="uid://dc8o0sjlm4iw0" path="res://assets/fonts/Micro5-Regular.ttf" id="2_6nspi"]
+
+[sub_resource type="Theme" id="Theme_mrplr"]
+default_font = ExtResource("2_6nspi")
+default_font_size = 7
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_disabled_color = Color(1, 0.301961, 0.301961, 0.501961)
+Button/colors/font_focus_color = Color(0.219608, 0.615686, 0.360784, 1)
+Button/colors/font_hover_color = Color(0.219608, 0.615686, 0.360784, 1)
+Label/colors/font_color = Color(0, 0.670588, 0.376471, 1)
+Label/font_sizes/font_size = 16
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_eeghv")
+
+[node name="UI" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_mrplr")
+
+[node name="GameTitle" type="Label" parent="UI"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Web Crashers"
+horizontal_alignment = 1
+
+[node name="Author" type="Label" parent="UI"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45098, 0.45098, 0.45098, 1)
+theme_override_font_sizes/font_size = 7
+text = "by jonafin"
+horizontal_alignment = 1
+
+[node name="Seperator" type="HSeparator" parent="UI"]
+layout_mode = 2
+
+[node name="Menu" type="MarginContainer" parent="UI"]
+layout_mode = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 100
+
+[node name="Items" type="VBoxContainer" parent="UI/Menu"]
+layout_mode = 2
+
+[node name="JoinLobby" type="HBoxContainer" parent="UI/Menu/Items"]
+layout_mode = 2
+
+[node name="Code" type="LineEdit" parent="UI/Menu/Items/JoinLobby"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Lobby Code"
+
+[node name="Join" type="Button" parent="UI/Menu/Items/JoinLobby"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Join Lobby"
+flat = true
+
+[node name="Or" type="Label" parent="UI/Menu/Items"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 7
+text = "or"
+horizontal_alignment = 1
+
+[node name="Host" type="Button" parent="UI/Menu/Items"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Create Lobby"
+flat = true
+
+[node name="Seperator" type="HSeparator" parent="UI/Menu/Items"]
+layout_mode = 2
+
+[node name="Settings" type="Button" parent="UI/Menu/Items"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Settings"
+flat = true
+
+[node name="Quit" type="Button" parent="UI/Menu/Items"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Quit Game"
+flat = true
+
+[node name="JoinHTTP" type="HTTPRequest" parent="."]
+
+[node name="HostHTTP" type="HTTPRequest" parent="."]
+
+[connection signal="pressed" from="UI/Menu/Items/JoinLobby/Join" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="UI/Menu/Items/Host" to="." method="_on_host_pressed"]
+[connection signal="request_completed" from="JoinHTTP" to="." method="_on_join_http_request_completed"]
+[connection signal="request_completed" from="HostHTTP" to="." method="_on_host_http_request_completed"]

@@ -1,0 +1,76 @@
+[gd_scene load_steps=7 format=3 uid="uid://dontw1bgpedqu"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_2vj71"]
+[ext_resource type="Texture2D" uid="uid://bevfev7ek2sce" path="res://assets/sprites/player_blue.png" id="2_f2r2n"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sfqoe"]
+size = Vector2(13, 9)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_fqre4"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:health")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_epxll"]
+atlas = ExtResource("2_f2r2n")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_778f1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_epxll")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Player" type="CharacterBody2D" groups=["Player"]]
+platform_floor_layers = 4294967040
+script = ExtResource("1_2vj71")
+wheel_base = 30
+steering_angle = 17
+engine_power = 300
+slip_speed = 500
+traction_fast = 1.5
+health = 1.0
+powerslide_wb = 10
+powerslide_friction = -15
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 0.5)
+shape = SubResource("RectangleShape2D_sfqoe")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_fqre4")
+
+[node name="UI" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="HUD" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Health" type="Label" parent="UI/HUD"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_font_sizes/font_size = 16
+text = "Health"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+enabled = false
+position_smoothing_enabled = true
+position_smoothing_speed = 7.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_778f1")
